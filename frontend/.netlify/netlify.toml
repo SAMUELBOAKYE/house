@@ -1,0 +1,31 @@
+plugins = []
+functionsDirectory = "C:\\Users\\Administrator\\quest\\frontend\\netlify\\functions"
+functionsDirectoryOrigin = "config-v1"
+headers = []
+redirects = []
+
+[functions]
+
+[functions."*"]
+
+[build]
+publish = "C:\\Users\\Administrator\\quest\\frontend\\dist"
+publishOrigin = "config"
+commandOrigin = "config"
+base = "C:\\Users\\Administrator\\quest\\frontend"
+command = "npm run build"
+functions = "C:\\Users\\Administrator\\quest\\frontend\\netlify\\functions"
+
+[build.environment]
+
+[build.processing]
+
+[build.processing.css]
+
+[build.processing.html]
+
+[build.processing.images]
+
+[build.processing.js]
+
+[build.services]

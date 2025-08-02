@@ -1,0 +1,18 @@
+﻿# 🚫 Ignore environment variables
+.env
+
+# 🧠 Node dependencies
+node_modules/
+
+# 🗑 Logs
+*.log
+logs/
+
+# ⚙️ Build files (optional if you build)
+dist/
+build/
+
+# 📦 IDE & system files
+.DS_Store
+.vscode/
+*.swp

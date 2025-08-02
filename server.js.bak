@@ -1,0 +1,18 @@
+﻿const express = require("express");`r`nconst cors = require("cors");
+const app = express();`r`napp.use(cors());
+app.use(express.json());
+
+// ✅ Mock /api/bookings route
+app.get("/api/bookings", (req, res) => {
+  res.json([
+    { transactionId: 1, status: "completed", amount: "150", roomName: "Deluxe" },
+    { transactionId: 2, status: "pending", amount: "200", roomName: "Suite" }
+  ]);
+});
+
+// ✅ Start the mock server
+app.listen(5000, () => {
+  console.log("✅ Mock backend running at http://localhost:5000");
+});
+
+

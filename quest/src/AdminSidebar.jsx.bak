@@ -1,0 +1,200 @@
+﻿import React, { useEffect, useState } from "react";
+import { Tag, Statistic, Button, Spin, Alert } from "antd";
+import { ReloadOutlined, CloseOutlined } from "@ant-design/icons";
+import "./AdminDashboard.css";
+
+const AdminSidebar = ({ isOpen, onClose }) => {
+  const [bookings, setBookings] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [stats, setStats] = useState({
+    total: 0,
+    completed: 0,
+    pending: 0,
+    failed: 0,
+    revenue: 0,
+  });
+
+  const apiBaseUrl = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      setError("Please login to access the admin dashboard.");
+      window.location.href = "/login";
+      return;
+    }
+
+    fetchBookings(token);
+    fetchStats(token);
+  }, []);
+
+  const fetchBookings = async (token) => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      const response = await fetch(`${apiBaseUrl}/api/bookings`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.status === 401) {
+        localStorage.removeItem("token");
+        setError("Session expired. Please login again.");
+        window.location.href = "/login";
+        return;
+      }
+
+      if (!response.ok) throw new Error("Failed to fetch bookings");
+
+      const data = await response.json();
+      setBookings(data);
+    } catch (err) {
+      console.error("Bookings fetch error:", err.message);
+      setError("Unable to load bookings.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+    const fetchStats = async (token) => {
+    try {
+      // Ensure bookings are loaded
+      if (bookings.length === 0) {
+        await fetchBookings(token);
+      }
+
+      const calculatedStats = {
+        total: bookings.length,
+        completed: bookings.filter(b => b.status === 'completed').length,
+        pending: bookings.filter(b => b.status === 'pending').length,
+        failed: bookings.filter(b => b.status === 'failed').length,
+        revenue: bookings
+          .filter(b => b.status === 'completed')
+          .reduce((sum, b) => sum + parseFloat(b.amount || 0), 0)
+      };
+
+      setStats(calculatedStats);
+    } catch (err) {
+      console.error("Stats calculation error:", err);
+      setError("Unable to calculate stats from bookings data.");
+    }
+  };
+
+  const handleRefresh = () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      setError("Please login to continue.");
+      window.location.href = "/login";
+      return;
+    }
+
+    fetchBookings(token);
+    fetchStats(token);
+  };
+
+  const isMobile = typeof window !== "undefined" && window.innerWidth < 992;
+
+  return (
+    <aside className={`admin-sidebar ${isOpen ? "open" : ""}`}>
+      <div className="sidebar-header">
+        <h2>YAFAFA</h2>
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <Button
+            icon={<ReloadOutlined />}
+            onClick={handleRefresh}
+            loading={loading}
+            size="small"
+          />
+          {isMobile && (
+            <Button
+              icon={<CloseOutlined />}
+              onClick={onClose}
+              size="small"
+              style={{ marginLeft: 10 }}
+            />
+          )}
+        </div>
+      </div>
+
+      {error && (
+        <Alert
+          message="Error"
+          description={error}
+          type="error"
+          showIcon
+          closable
+          onClose={() => setError(null)}
+          style={{ marginBottom: 20 }}
+        />
+      )}
+
+      <div className="sidebar-stats">
+        {[
+          { title: "Total Bookings", value: stats.total, color: "#3f8600" },
+          { title: "Completed", value: stats.completed, color: "#3f8600" },
+          { title: "Pending", value: stats.pending, color: "#faad14" },
+          { title: "Failed", value: stats.failed, color: "#cf1322" },
+          {
+            title: "Revenue (GHS)",
+            value: stats.revenue,
+            color: "#3f8600",
+            precision: 2,
+          },
+        ].map((stat, i) => (
+          <div className="stat-card" key={i}>
+            <Statistic
+              title={stat.title}
+              value={stat.value}
+              precision={stat.precision || 0}
+              valueStyle={{ color: stat.color }}
+            />
+          </div>
+        ))}
+      </div>
+
+      <div className="recent-bookings">
+        <h3>Recent Bookings</h3>
+        {loading ? (
+          <Spin size="small" />
+        ) : bookings.length === 0 ? (
+          <p style={{ color: "#ccc", fontStyle: "italic" }}>
+            No bookings found.
+          </p>
+        ) : (
+          <ul>
+            {bookings.slice(0, 5).map((booking) => (
+              <li key={booking.transactionId}>
+                <div className="booking-item">
+                  <span className="booking-room">{booking.roomName}</span>
+                  <Tag
+                    color={
+                      booking.status === "completed"
+                        ? "green"
+                        : booking.status === "pending"
+                        ? "orange"
+                        : "red"
+                    }
+                  >
+                    {booking.status.toUpperCase()}
+                  </Tag>
+                  <span className="booking-amount">
+                    GHS {parseFloat(booking.amount).toFixed(2)}
+                  </span>
+                </div>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </aside>
+  );
+};
+
+export default AdminSidebar;
+
+
+
+

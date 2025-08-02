@@ -1,0 +1,296 @@
+/* ========================
+   Admin Sidebar Desktop
+========================= */
+.sidebar-desktop {
+  width: 250px;
+  height: 100vh;
+  background: #001529;
+  color: white;
+  padding: 20px;
+  position: fixed;
+  left: 0;
+  top: 0;
+  display: block;
+}
+
+/* Hide desktop sidebar on mobile */
+@media (max-width: 767px) {
+  .sidebar-desktop {
+    display: none;
+  }
+
+  .main-content {
+    margin-left: 0 !important;
+    padding: 16px;
+  }
+}
+
+/* Ant Design Menu Overrides */
+.ant-menu {
+  background: transparent !important;
+  color: white !important;
+}
+
+.ant-menu-item:hover {
+  background: #1890ff !important;
+}
+
+/* ========================
+   Root & Global Styles
+========================= */
+:root {
+  --clr-sidebar-bg: linear-gradient(145deg, #1a1a2e 0%, #0f1123 100%);
+  --clr-accent: #fc00ff;
+  --clr-accent2: #00dbde;
+  --clr-white: #ffffff;
+  --clr-error: #cf1322;
+  --clr-bg-blur: rgba(255, 255, 255, 0.05);
+  --clr-bg-blur-hover: rgba(255, 255, 255, 0.1);
+  --clr-shadow: rgba(0, 0, 0, 0.1);
+  --clr-overlay: rgba(0, 0, 0, 0.5);
+  --clr-main-bg: #f5f7fa;
+  --font-family: "Inter", sans-serif;
+  --transition: all 0.3s ease;
+  --shadow-lg: 0 12px 25px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 5px 15px rgba(0, 0, 0, 0.1);
+  --text: #222;
+  --text-light: #777;
+  --border: #ddd;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  width: 100%;
+  overflow-x: hidden;
+  font-family: var(--font-family);
+  background: var(--clr-main-bg);
+}
+
+/* ========================
+   Layout Structure
+========================= */
+.dashboard-layout {
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+  position: relative;
+}
+
+.main-content {
+  flex: 1;
+  padding: 25px;
+  background: var(--clr-main-bg);
+  min-height: 100vh;
+  transition: margin-left 0.3s ease;
+}
+
+.sidebar-visible .main-content {
+  margin-left: 420px;
+}
+
+/* ========================
+   Admin Sidebar
+========================= */
+.admin-sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 420px;
+  padding: 35px;
+  background: var(--clr-sidebar-bg);
+  color: var(--clr-white);
+  box-shadow: 5px 0 15px var(--clr-shadow);
+  transform: translateX(-100%);
+  transition: transform 0.3s ease;
+  overflow-y: auto;
+  z-index: 1000;
+  backdrop-filter: blur(14px);
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.admin-sidebar.open {
+  transform: translateX(0);
+  animation: slideInLeft 0.6s ease-out;
+}
+
+@keyframes slideInLeft {
+  0% {
+    transform: translateX(-30%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.admin-sidebar::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.1) 0%,
+    transparent 70%
+  );
+  animation: pulse 15s linear infinite;
+  z-index: -1;
+}
+
+@keyframes pulse {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* ========================
+   Sidebar Header
+========================= */
+.sidebar-header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 15px;
+  margin-bottom: 25px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  animation: fadeInDown 0.5s ease;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.sidebar-header h2 {
+  font-size: 32px;
+  font-weight: 700;
+  background: linear-gradient(90deg, var(--clr-accent2), var(--clr-accent));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: gradientMove 3s ease infinite;
+}
+
+@keyframes gradientMove {
+  0% {
+    background-position: 0%;
+  }
+  100% {
+    background-position: 100%;
+  }
+}
+
+/* ========================
+   Filter Buttons & Inputs
+========================= */
+.sidebar-content .filters {
+  margin-bottom: 20px;
+}
+
+.sidebar-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* ========================
+   Booking Table & Error
+========================= */
+.error-container {
+  margin-top: 20px;
+}
+
+.error-message {
+  color: var(--clr-error);
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.loading {
+  text-align: center;
+  padding: 40px 0;
+  font-weight: bold;
+}
+
+.sidebar-table .ant-table-thead > tr > th {
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+}
+
+/* ========================
+   Modal
+========================= */
+.ant-modal-title {
+  color: var(--clr-accent);
+}
+
+/* ========================
+   Responsive Adjustments
+========================= */
+@media (max-width: 992px) {
+  .admin-sidebar {
+    width: 100%;
+    height: auto;
+    position: fixed;
+    padding: 25px;
+    transform: translateY(-100%);
+  }
+
+  .admin-sidebar.open {
+    transform: translateY(0);
+  }
+
+  .sidebar-header {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .sidebar-header h2 {
+    font-size: 28px;
+  }
+
+  .sidebar-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .main-content {
+    margin-left: 0 !important;
+    padding: 15px;
+  }
+
+  .sidebar-overlay {
+    position: fixed;
+    inset: 0;
+    background: var(--clr-overlay);
+    z-index: 999;
+    display: none;
+  }
+
+  .sidebar-overlay.active {
+    display: block;
+    animation: fadeIn 0.3s ease forwards;
+    backdrop-filter: blur(2px);
+  }
+}
