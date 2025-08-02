@@ -18,12 +18,18 @@ export default defineConfig({
       },
     }),
   ],
+
+  // ✅ Ensure Vite outputs to /dist (important for Netlify or production)
+  build: {
+    outDir: "dist",
+  },
+
   server: {
-    port: 5173, // ✅ Dev server port
-    strictPort: true, // ✅ Fail if port is in use
-    open: true, // ✅ Auto-open browser
+    port: 5173,
+    strictPort: true,
+    open: true,
     watch: {
-      usePolling: true, // ✅ Important for WSL or Docker
+      usePolling: true,
       interval: 100,
     },
     proxy: {
@@ -35,11 +41,13 @@ export default defineConfig({
       },
     },
   },
+
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "./src"), // ✅ Use @ to import from src
+      "@": path.resolve(__dirname, "./src"),
     },
   },
+
   define: {
     "process.env": {
       VITE_API_BASE_URL: JSON.stringify(
