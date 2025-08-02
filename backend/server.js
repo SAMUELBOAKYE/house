@@ -21,8 +21,8 @@ const app = express();
 // 🌐 Allowed frontend origins for CORS
 const allowedOrigins = [
   "http://localhost:5173", // Vite dev server
-  "https://quest.netlify.app", // Your Netlify frontend
-  "https://quest-frontend.onrender.com", // Optional Render-hosted frontend
+  "https://quest.netlify.app", // Netlify frontend
+  "https://quest-frontend.onrender.com", // Render frontend (optional)
 ];
 
 // 🔐 CORS configuration
@@ -42,7 +42,7 @@ const corsOptions = {
 
 // ✅ Apply middleware
 app.use(cors(corsOptions));
-app.options("*", cors(corsOptions)); // Pre-flight
+app.options("*", cors(corsOptions));
 app.use(bodyParser.json());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -90,4 +90,3 @@ const startServer = async () => {
 };
 
 startServer();
-
