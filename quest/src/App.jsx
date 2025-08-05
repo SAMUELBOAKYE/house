@@ -15,7 +15,8 @@ import Home from "./home";
 import Rooms from "./rooms";
 import BookingPage from "./Bookingpage";
 import Payment from "./payment";
-import PaymentSuccess from "./paymentSuccess";
+import PaymentSuccess from "./PaymentSuccess";
+
 import RoomSummary from "./RoomSummary";
 
 import Login from "./pages/Login";
