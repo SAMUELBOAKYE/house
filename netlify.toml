@@ -1,4 +1,3 @@
 [build]
-base = "quest"
 command = "npm run build"
 publish = "dist"
