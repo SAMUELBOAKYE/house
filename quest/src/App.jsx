@@ -23,7 +23,7 @@ import Login from "./pages/Login";
 import Register from "./Register";
 import ForgotPassword from "./ForgotPassword";
 import ResetPassword from "./ResetPassword";
-import VerifyEmail from "./VerifyEmail";
+import VerifyEmail from "./VerifyEmail"; // ✅ must match file name exactly
 
 import AdminDashboard from "./AdminSidebar";
 
