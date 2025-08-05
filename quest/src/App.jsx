@@ -12,10 +12,10 @@ import ProtectedRoute from "./ProtectedRoute";
 // Components and Pages
 import Header from "./header";
 import Home from "./home";
-import Rooms from "./Rooms";
-import BookingPage from "./BookingPage";
-import Payment from "./Payment";
-import PaymentSuccess from "./PaymentSuccess";
+import Rooms from "./rooms";
+import BookingPage from "./bookingPage";
+import Payment from "./payment";
+import PaymentSuccess from "./paymentSuccess";
 import RoomSummary from "./RoomSummary";
 
 import Login from "./pages/Login";
