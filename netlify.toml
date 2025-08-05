@@ -1,5 +1,7 @@
 [build]
-base = "quest"
+base = ""
 command = "npm run build"
-publish = "quest/dist"
+publish = "dist"
 
+[functions]
+directory = "netlify/functions"
