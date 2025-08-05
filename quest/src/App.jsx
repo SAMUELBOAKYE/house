@@ -13,7 +13,7 @@ import ProtectedRoute from "./ProtectedRoute";
 import Header from "./header";
 import Home from "./home";
 import Rooms from "./rooms";
-import BookingPage from "./BookingPage";
+import BookingPage from "./bookingPage";
 import Payment from "./payment";
 import PaymentSuccess from "./paymentSuccess";
 import RoomSummary from "./RoomSummary";
