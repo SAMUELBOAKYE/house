@@ -27,7 +27,6 @@ import VerifyEmail from "./VerifyEmail";
 
 import AdminDashboard from "./AdminSidebar";
 
-// Layout Component
 const AppLayout = () => {
   const location = useLocation();
   const { isAuthenticated, loading } = useContext(AuthContext);
@@ -51,7 +50,6 @@ const AppLayout = () => {
       <ToastContainer position="top-center" autoClose={5000} />
       <ErrorBoundary>
         <Routes>
-          {/* Public Routes */}
           <Route path="/" element={<Home />} />
           <Route path="/rooms" element={<Rooms />} />
           <Route path="/booking" element={<BookingPage />} />
