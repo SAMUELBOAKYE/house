@@ -11,7 +11,7 @@ import ProtectedRoute from "./ProtectedRoute";
 
 // Components and Pages
 import Header from "./header";
-import Home from "./Home";
+import Home from "./home";
 import Rooms from "./Rooms";
 import BookingPage from "./BookingPage";
 import Payment from "./Payment";
