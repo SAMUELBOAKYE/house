@@ -10,7 +10,7 @@ import ErrorBoundary from "./ErrorBoundary";
 import ProtectedRoute from "./ProtectedRoute";
 
 // Components and Pages
-import Header from "./Header";
+import Header from "./header";
 import Home from "./Home";
 import Rooms from "./Rooms";
 import BookingPage from "./BookingPage";
