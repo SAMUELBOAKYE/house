@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { PaystackButton } from "react-paystack";
 import axios from "axios";
 import { motion, AnimatePresence } from "framer-motion";
-import "./Payment.css";
+import "./payment.css";
 
 const Payment = () => {
   const { state } = useLocation();
