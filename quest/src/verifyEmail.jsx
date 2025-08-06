@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
-import "./VerifyEmail.css";
+import "./verifyEmail.css";
 
 const VerifyEmail = () => {
   const [searchParams] = useSearchParams();
@@ -41,4 +41,3 @@ const VerifyEmail = () => {
 };
 
 export default VerifyEmail;
-
