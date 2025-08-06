@@ -23,11 +23,11 @@ import Login from "./pages/Login";
 import Register from "./Register";
 import ForgotPassword from "./ForgotPassword";
 import ResetPassword from "./ResetPassword";
-import VerifyEmail from "./VerifyEmail";
+import VerifyEmail from "./VerifyEmail.jsx";
 
 import AdminDashboard from "./AdminSidebar";
 
-const AppLayout = () => {
+const App = () => {
   const location = useLocation();
   const { isAuthenticated, loading } = useContext(AuthContext);
 
@@ -92,4 +92,4 @@ const AppLayout = () => {
   );
 };
 
-export default AppLayout;
+export default App;
