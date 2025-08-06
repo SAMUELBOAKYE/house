@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { usePaystackPayment } from "react-paystack";
+import { PaystackButton } from "react-paystack";
 import axios from "axios";
 import { motion, AnimatePresence } from "framer-motion";
 import "./Payment.css";
@@ -23,50 +23,29 @@ const Payment = () => {
   const apiBaseUrl =
     import.meta.env.VITE_API_URL || "https://quest-backend.onrender.com";
 
-  console.log("âœ… Paystack Key:", paystackPublicKey);
+  const convertToGHS = (usd) => Math.round(usd * 12 * 100); // GHS in kobo
 
-  const convertToGHS = (usd) => Math.round(usd * 12 * 100);
+  const amount = room ? convertToGHS(room.price) : 0;
 
-  const config = {
-    reference: new Date().getTime().toString(),
+  const componentProps = {
     email,
-    amount: room ? convertToGHS(room.price) : 0,
-    publicKey: paystackPublicKey,
-    currency: "GHS",
-    channels: ["mobile_money"],
+    amount,
     metadata: {
-      custom_fields: [
-        {
-          display_name: "Room Booked",
-          variable_name: "room_booked",
-          value: room?.name || "Unknown",
-        },
-        {
-          display_name: "Phone Number",
-          variable_name: "phone_number",
-          value: phoneNumber,
-        },
-      ],
-    },
-    mobile_money: {
       phone: phoneNumber,
-      provider: network.toLowerCase(),
+      network,
+      room: room?.name || "Unknown",
     },
-  };
+    publicKey: paystackPublicKey,
+    text: isProcessing ? "Processing..." : "Pay with Mobile Money",
+    onSuccess: async (reference) => {
+      try {
+        setIsProcessing(true);
+        const res = await axios.get(
+          `${apiBaseUrl}/api/paystack/verify/${reference.reference}`
+        );
 
-  const initializePayment = usePaystackPayment(config);
-
-  const onSuccess = async (reference) => {
-    try {
-      setIsProcessing(true);
-      const res = await axios.get(
-        `${apiBaseUrl}/api/paystack/verify/${reference.reference}`
-      );
-
-      if (res.data.success) {
-        navigate(
-          "/payment-success",
-          {
+        if (res.data.success) {
+          navigate("/payment-success", {
             state: {
               booking: res.data.booking,
               room,
@@ -74,22 +53,20 @@ const Payment = () => {
               network: res.data.booking.network,
               transactionId: res.data.booking.transactionId,
             },
-          },
-          []
-        );
-      } else {
-        setError(res.data.message || "Payment verification failed.");
+          });
+        } else {
+          setError(res.data.message || "Payment verification failed.");
+        }
+      } catch (err) {
+        setError("Verification failed. Please try again.");
+      } finally {
+        setIsProcessing(false);
       }
-    } catch (err) {
-      setError("Verification failed. Please try again.");
-    } finally {
-      setIsProcessing(false);
-    }
+    },
+    onClose: () => setError("Payment popup was closed."),
   };
 
-  const onClose = () => setError("Payment popup was closed.");
-
-  const handleSubmit = (e) => {
+  const handleValidation = (e) => {
     e.preventDefault();
     setError("");
 
@@ -104,10 +81,11 @@ const Payment = () => {
     }
 
     if (!paystackPublicKey) {
-      return setError("âŒ Paystack public key is missing. Check .env file.");
+      return setError("Paystack public key is missing. Check .env file.");
     }
 
-    initializePayment(onSuccess, onClose);
+    // Proceed to open Paystack Button
+    document.getElementById("paystack-btn").click();
   };
 
   if (!room) {
@@ -151,10 +129,6 @@ const Payment = () => {
             type: "spring",
             stiffness: 100,
           }}
-          whileHover={{
-            scale: 1.02,
-            boxShadow: "0 20px 60px rgba(0, 0, 0, 0.2)",
-          }}
         >
           <div className="payment-header">
             <motion.h2
@@ -178,7 +152,7 @@ const Payment = () => {
           </div>
 
           <div className="payment-content">
-            <form className="payment-form" onSubmit={handleSubmit}>
+            <form className="payment-form" onSubmit={handleValidation}>
               <motion.div
                 className="form-group"
                 initial={{ x: -20, opacity: 0 }}
@@ -266,11 +240,16 @@ const Payment = () => {
                   </>
                 ) : (
                   <>
-                    <span className="payment-icon">FUNNY</span>
-                    Pay with Mobile Money
+                    <span className="payment-icon">💳</span>
+                    Proceed to Paystack
                   </>
                 )}
               </motion.button>
+
+              {/* Hidden Paystack Button that gets clicked programmatically */}
+              <div style={{ display: "none" }}>
+                <PaystackButton {...componentProps} id="paystack-btn" />
+              </div>
             </form>
           </div>
         </motion.div>
