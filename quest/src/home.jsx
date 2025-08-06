@@ -2,7 +2,7 @@
 import { Link } from "react-router-dom";
 import { MenuOutlined, CloseOutlined } from "@ant-design/icons";
 import AdminSidebar from "./AdminSidebar";
-import "./Home.css";
+import "./home.css";
 import myImage from "./assets/yoo.jpg"; // Adjust path if needed
 
 const Home = () => {
