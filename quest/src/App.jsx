@@ -14,7 +14,7 @@ import Header from "./header";
 import Home from "./home";
 import Rooms from "./rooms";
 import BookingPage from "./Bookingpage";
-import Payment from "./payment";
+import Payment from "./Payment";
 import PaymentSuccess from "./PaymentSuccess";
 
 import RoomSummary from "./RoomSummary";
